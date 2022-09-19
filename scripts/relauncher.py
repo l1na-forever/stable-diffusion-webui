@@ -11,10 +11,10 @@ extra_models_cpu = False
 open_in_browser = False
 
 # Run Stable Diffusion in Optimized Mode - Only requires 4Gb of VRAM, but is significantly slower
-optimized = False
+optimized = True
 
 # Run in Optimized Turbo Mode - Needs more VRAM than regular optimized mode, but is faster
-optimized_turbo = False
+optimized_turbo = True
 
 # Creates a public xxxxx.gradio.app share link to allow others to use your interface (requires properly forwarded ports to work correctly)
 share = False

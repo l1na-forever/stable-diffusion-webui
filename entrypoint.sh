@@ -5,7 +5,7 @@
 
 # set -x
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=/sd
 cd $SCRIPT_DIR
 export PYTHONPATH=$SCRIPT_DIR
 
@@ -58,6 +58,11 @@ fi
 conda activate $ENV_NAME
 conda info | grep active
 
+# Patch for AMD
+echo "Installing PyTorch ROCM5.1.1 version.."
+pip3 install --upgrade torch torchvision --extra-index-url https://download.pytorch.org/whl/rocm5.1.1
+echo "Done installing PyTorch ROCM"
+
 # Function to checks for valid hash for model files and download/replaces if invalid or does not exist
 validateDownloadModel() {
     local file=$1
@@ -69,6 +74,7 @@ validateDownloadModel() {
     sha256sum --check --status <<< "${hash} ${MODEL_DIR}/${file}.${hash}"
     if [[ $? == "1" ]]; then
         echo "Downloading: ${url} please wait..."
+        mkdir -p ${MODEL_DIR}
         mkdir -p ${path}
         wget --output-document=${MODEL_DIR}/${file}.${hash} --no-verbose --show-progress --progress=dot:giga ${url}
         ln -sf ${MODEL_DIR}/${file}.${hash} ${path}/${file}
